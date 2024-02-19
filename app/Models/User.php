@@ -85,4 +85,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Route::class, 'route_users');
     }
+
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class, 'user_groups');
+    }
 }

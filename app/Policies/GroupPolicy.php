@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Route;
+use App\Models\Group;
 use App\Models\User;
 
-class RoutePolicy
+class GroupPolicy
 {
     private UserPolicy $userPolicy;
 
@@ -14,8 +14,8 @@ class RoutePolicy
         $this->userPolicy = $userPolicy;
     }
 
-    public function show(User $authUser, Route $route): bool
+    public function show(User $authUser, Group $group): bool
     {
-        return $route->users->contains($authUser) || $this->userPolicy->isAdmin($authUser);
+        return $group->isAssignedToUser($authUser) || $this->userPolicy->isAdmin($authUser);
     }
 }

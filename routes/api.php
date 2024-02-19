@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RouteController;
@@ -60,10 +61,21 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [UserController::class, 'paginate']);
         Route::get('{id}', [UserController::class, 'getUser']);
         Route::post('/', [UserController::class, 'createUser']);
-        Route::put('{id}', [UserController::class, 'updateUser']);
+        Route::patch('{id}', [UserController::class, 'updateUser']);
         Route::delete('{id}', [UserController::class, 'deleteUser']);
 
         Route::get('{id}/routes', [RouteUserController::class, 'getUserRoutes']);
+        Route::get('{id}/groups', [GroupController::class, 'getUserGroups']);
+    });
+
+    Route::prefix('user-groups')->group(function () {
+        Route::get('/',[GroupController::class,'paginate']);
+        Route::get('{id}',[GroupController::class,'getGroup']);
+        Route::post('/',[GroupController::class,'createGroup']);
+        Route::put('/',[GroupController::class,'updateGroup']);
+        Route::delete('{id}',[GroupController::class,'deleteGroup']);
+
+        Route::get('{id}/users',[GroupController::class,'getUsersByGroup']);
     });
 
     Route::post('/logout', [LogoutController::class, 'logout']);
