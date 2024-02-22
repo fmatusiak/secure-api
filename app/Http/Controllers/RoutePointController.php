@@ -30,9 +30,9 @@ class RoutePointController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function getRoutePoint(int $id): JsonResponse
+    public function getRoutePoint(int $routePointId): JsonResponse
     {
-        $routePoint = $this->routePointService->getRoutePoint($id);
+        $routePoint = $this->routePointService->getRoutePoint($routePointId);
 
         $this->authorize('show', [RoutePoint::class, $routePoint]);
 
@@ -54,11 +54,11 @@ class RoutePointController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function updateRoutePoint(int $id, UpdateRoutePointRequest $request): JsonResponse
+    public function updateRoutePoint(int $routePointId, UpdateRoutePointRequest $request): JsonResponse
     {
         $this->authorize('isAdmin', User::class);
 
-        $routePoint = $this->routePointService->updateRoutePoint($id, $request->all());
+        $routePoint = $this->routePointService->updateRoutePoint($routePointId, $request->all());
 
         return response()->json(['data' => $routePoint]);
     }
@@ -66,11 +66,11 @@ class RoutePointController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function deleteRoutePoint(int $id): JsonResponse
+    public function deleteRoutePoint(int $routePointId): JsonResponse
     {
         $this->authorize('isAdmin', User::class);
 
-        $status = $this->routePointService->deleteRoutePoint($id);
+        $status = $this->routePointService->deleteRoutePoint($routePointId);
 
         return response()->json(['status' => $status]);
     }

@@ -41,11 +41,11 @@ class UserController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function updateUser(int $id, UpdateUserRequest $request): JsonResponse
+    public function updateUser(int $userId, UpdateUserRequest $request): JsonResponse
     {
         $this->authorize('isAdmin', User::class);
 
-        $user = $this->userService->updateUser($id, $request->all());
+        $user = $this->userService->updateUser($userId, $request->all());
 
         return response()->json(['data' => $user]);
     }
@@ -53,9 +53,9 @@ class UserController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function getUser(int $id): JsonResponse
+    public function getUser(int $userId): JsonResponse
     {
-        $user = $this->userService->getUser($id);
+        $user = $this->userService->getUser($userId);
 
         $this->authorize('show', [User::class, $user]);
 
@@ -65,11 +65,11 @@ class UserController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function deleteUser(int $id): JsonResponse
+    public function deleteUser(int $userId): JsonResponse
     {
         $this->authorize('isAdmin', User::class);
 
-        $status = $this->userService->deleteUser($id);
+        $status = $this->userService->deleteUser($userId);
 
         return response()->json(['status' => $status]);
     }

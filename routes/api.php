@@ -24,10 +24,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('routes')->group(function () {
         Route::get('/', [RouteController::class, 'paginate']);
-        Route::get('{id}', [RouteController::class, 'getRoute']);
+        Route::get('{routeId}', [RouteController::class, 'getRoute']);
         Route::post('/', [RouteController::class, 'createRoute']);
-        Route::put('{id}', [RouteController::class, 'updateRoute']);
-        Route::delete('{id}', [RouteController::class, 'deleteRoute']);
+        Route::put('{routeId}', [RouteController::class, 'updateRoute']);
+        Route::delete('{routeId}', [RouteController::class, 'deleteRoute']);
 
         Route::post('assign-points', [RouteController::class, 'assignRoutePoints']);
         Route::post('delete-points', [RouteController::class, 'deleteRoutePoints']);
@@ -36,15 +36,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('assign-users', [RouteController::class, 'assignUsersToRoute']);
         Route::post('detach-users', [RouteController::class, 'detachUsersFromRoute']);
 
-        Route::get('{id}/users', [RouteUserController::class, 'getRouteUsers']);
+        Route::get('{routeId}/users', [RouteUserController::class, 'getRouteUsers']);
     });
 
     Route::prefix('route-points')->group(function () {
         Route::get('/', [RoutePointController::class, 'paginate']);
-        Route::get('{id}', [RoutePointController::class, 'getRoutePoint']);
+        Route::get('{routePointId}', [RoutePointController::class, 'getRoutePoint']);
         Route::post('/', [RoutePointController::class, 'createRoutePoint']);
-        Route::put('{id}', [RoutePointController::class, 'updateRoutePoint']);
-        Route::delete('{id}', [RoutePointController::class, 'deleteRoutePoint']);
+        Route::put('{routePointId}', [RoutePointController::class, 'updateRoutePoint']);
+        Route::delete('{routePointId}', [RoutePointController::class, 'deleteRoutePoint']);
     });
 
     Route::prefix('user-routes')->group(function () {
@@ -59,13 +59,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'paginate']);
-        Route::get('{id}', [UserController::class, 'getUser']);
+        Route::get('{userId}', [UserController::class, 'getUser']);
         Route::post('/', [UserController::class, 'createUser']);
-        Route::patch('{id}', [UserController::class, 'updateUser']);
-        Route::delete('{id}', [UserController::class, 'deleteUser']);
+        Route::patch('{userId}', [UserController::class, 'updateUser']);
+        Route::delete('{userId}', [UserController::class, 'deleteUser']);
 
-        Route::get('{id}/routes', [RouteUserController::class, 'getUserRoutes']);
-        Route::get('{id}/groups', [GroupController::class, 'getUserGroups']);
+        Route::get('{userId}/routes', [RouteUserController::class, 'getUserRoutes']);
+        Route::get('{userId}/groups', [GroupController::class, 'getUserGroups']);
         Route::get('{userId}/assigned-users', [GroupController::class, 'getUsersAssignedToGroupByUser']);
     });
 

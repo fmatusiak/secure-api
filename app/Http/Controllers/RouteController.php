@@ -36,9 +36,9 @@ class RouteController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function getRoute(int $id): JsonResponse
+    public function getRoute(int $routeId): JsonResponse
     {
-        $route = $this->routeService->getRoute($id);
+        $route = $this->routeService->getRoute($routeId);
 
         $this->authorize('show', [Route::class, $route]);
 
@@ -60,11 +60,11 @@ class RouteController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function updateRoute(int $id, UpdateRouteRequest $request): JsonResponse
+    public function updateRoute(int $routeId, UpdateRouteRequest $request): JsonResponse
     {
         $this->authorize('isAdmin', User::class);
 
-        $route = $this->routeService->updateRoute($id, $request->all());
+        $route = $this->routeService->updateRoute($routeId, $request->all());
 
         return response()->json(['data' => $route]);
     }
@@ -72,11 +72,11 @@ class RouteController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function deleteRoute(int $id): JsonResponse
+    public function deleteRoute(int $routeId): JsonResponse
     {
         $this->authorize('isAdmin', User::class);
 
-        $status = $this->routeService->deleteRoute($id);
+        $status = $this->routeService->deleteRoute($routeId);
 
         return response()->json(['status' => $status]);
     }
