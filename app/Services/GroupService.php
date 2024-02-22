@@ -50,4 +50,9 @@ class GroupService
     {
         return $this->groupRepository->getUsersByGroup($group, $input);
     }
+
+    public function getUsersAssignedToGroupByUser(User $user, array $input): LengthAwarePaginator
+    {
+        return $this->groupRepository->getUsersAssignedToGroupByUser($user, $input);
+    }
 }

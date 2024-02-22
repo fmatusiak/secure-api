@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Helpers\AuthHelper;
+use App\Helpers\PaginationHelper;
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use App\Services\QueryFilteringService;
@@ -21,8 +22,8 @@ class UserRepository extends CrudRepository implements UserRepositoryInterface
 
     public function paginate(array $input): LengthAwarePaginator
     {
-        $perPage = Arr::get($input, 'per_page', 10);
-        $columns = Arr::get($input, 'columns', ['*']);
+        $perPage = PaginationHelper::getPerPage($input);
+        $columns = PaginationHelper::getColumns($input);
 
         $query = $this->model::query();
 

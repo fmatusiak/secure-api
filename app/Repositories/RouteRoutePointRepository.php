@@ -3,13 +3,13 @@
 namespace App\Repositories;
 
 use App\Helpers\AuthHelper;
+use App\Helpers\PaginationHelper;
 use App\Interfaces\RouteRoutePointRepositoryInterface;
 use App\Models\Route;
 use App\Models\RoutePoint;
 use App\Models\RouteRoutePoint;
 use App\Services\QueryFilteringService;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Arr;
 
 class RouteRoutePointRepository extends CrudRepository implements RouteRoutePointRepositoryInterface
 {
@@ -23,8 +23,8 @@ class RouteRoutePointRepository extends CrudRepository implements RouteRoutePoin
 
     public function getRoutePointsByRoute(Route $route, array $input): LengthAwarePaginator
     {
-        $perPage = Arr::get($input, 'per_page', 10);
-        $columns = Arr::get($input, 'columns', ['*']);
+        $perPage = PaginationHelper::getPerPage($input);
+        $columns = PaginationHelper::getColumns($input);
 
         return $route
             ->routePoints()
@@ -33,8 +33,8 @@ class RouteRoutePointRepository extends CrudRepository implements RouteRoutePoin
 
     public function paginate(array $input): LengthAwarePaginator
     {
-        $perPage = Arr::get($input, 'per_page', 10);
-        $columns = Arr::get($input, 'columns', ['*']);
+        $perPage = PaginationHelper::getPerPage($input);
+        $columns = PaginationHelper::getColumns($input);
 
         $query = $this->model::query();
 
@@ -51,8 +51,8 @@ class RouteRoutePointRepository extends CrudRepository implements RouteRoutePoin
 
     public function getRoutesByRoutePoint(RoutePoint $routePoint, array $input): LengthAwarePaginator
     {
-        $perPage = Arr::get($input, 'per_page', 10);
-        $columns = Arr::get($input, 'columns', ['*']);
+        $perPage = PaginationHelper::getPerPage($input);
+        $columns = PaginationHelper::getColumns($input);
 
         $query = $routePoint->routes();
 

@@ -13,4 +13,6 @@ interface GroupRepositoryInterface
     public function getUserGroups(User $user, array $input): LengthAwarePaginator;
 
     public function getUsersByGroup(Group $group, array $input): LengthAwarePaginator;
+
+    public function getUsersAssignedToGroupByUser(User $user, array $input): LengthAwarePaginator;
 }

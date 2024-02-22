@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Helpers\AuthHelper;
+use App\Helpers\PaginationHelper;
 use App\Interfaces\RoutePointRepositoryInterface;
 use App\Models\RoutePoint;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -17,8 +18,8 @@ class RoutePointRepository extends CrudRepository implements RoutePointRepositor
 
     public function paginate($input): LengthAwarePaginator
     {
-        $perPage = Arr::get($input, 'per_page', 10);
-        $columns = Arr::get($input, 'columns', ['*']);
+        $perPage = PaginationHelper::getPerPage($input);
+        $columns = PaginationHelper::getColumns($input);
 
         $query = $this->model::query();
 

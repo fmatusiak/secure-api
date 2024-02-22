@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Helpers\AuthHelper;
+use App\Helpers\PaginationHelper;
 use App\Interfaces\GroupRepositoryInterface;
 use App\Models\Group;
 use App\Models\User;
@@ -20,20 +21,20 @@ class GroupRepository extends CrudRepository implements GroupRepositoryInterface
         $this->queryFilteringService = $queryFilteringService;
     }
 
-    public function getUserGroups(User $user, array $input): LengthAwarePaginator
+    public function getUsersByGroup(Group $group, array $input): LengthAwarePaginator
     {
-        $perPage = Arr::get($input, 'per_page', 10);
-        $columns = Arr::get($input, 'columns', ['*']);
+        $perPage = PaginationHelper::getPerPage($input);
+        $columns = PaginationHelper::getColumns($input);
 
-        return $user
-            ->groups()
+        return $group
+            ->users()
             ->paginate($perPage, $columns);
     }
 
     public function paginate(array $input): LengthAwarePaginator
     {
-        $perPage = Arr::get($input, 'per_page', 10);
-        $columns = Arr::get($input, 'columns', ['*']);
+        $perPage = PaginationHelper::getPerPage($input);
+        $columns = PaginationHelper::getColumns($input);
 
         $query = Group::query();
 
@@ -56,13 +57,31 @@ class GroupRepository extends CrudRepository implements GroupRepositoryInterface
             ->paginate($perPage, $columns);
     }
 
-    public function getUsersByGroup(Group $group, array $input): LengthAwarePaginator
+    public function getUsersAssignedToGroupByUser(User $user, array $input): LengthAwarePaginator
     {
-        $perPage = Arr::get($input, 'per_page', 10);
-        $columns = Arr::get($input, 'columns', ['*']);
+        $perPage = PaginationHelper::getPerPage($input);
+        $columns = PaginationHelper::getColumns($input);
 
-        return $group
-            ->users()
+        $groupsPaginator = $this->getUserGroups($user, $input);
+        $groupIds = $groupsPaginator->pluck('id');
+
+        $userQuery = User::query();
+
+        return $userQuery->whereHas('groups', function ($query) use ($groupIds) {
+            $query->whereIn('group_id', $groupIds);
+        })
+            ->whereNot('id', $user->getId())
+            ->distinct()
+            ->paginate($perPage, $columns);
+    }
+
+    public function getUserGroups(User $user, array $input): LengthAwarePaginator
+    {
+        $perPage = PaginationHelper::getPerPage($input);
+        $columns = PaginationHelper::getColumns($input);
+
+        return $user
+            ->groups()
             ->paginate($perPage, $columns);
     }
 }

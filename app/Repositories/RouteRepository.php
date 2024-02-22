@@ -6,6 +6,7 @@ use App\DateParser;
 use App\Exceptions\AdjacentRoutePointException;
 use App\Exceptions\DuplicateRoutePointException;
 use App\Helpers\AuthHelper;
+use App\Helpers\PaginationHelper;
 use App\Interfaces\RouteRepositoryInterface;
 use App\Models\Route;
 use App\Models\RouteRoutePoint;
@@ -30,8 +31,8 @@ class RouteRepository extends CrudRepository implements RouteRepositoryInterface
 
     public function paginate(array $input): LengthAwarePaginator
     {
-        $perPage = Arr::get($input, 'per_page', 10);
-        $columns = Arr::get($input, 'columns', ['*']);
+        $perPage = PaginationHelper::getPerPage($input);
+        $columns = PaginationHelper::getColumns($input);
 
         $query = $this->model::query();
 

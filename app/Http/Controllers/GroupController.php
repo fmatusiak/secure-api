@@ -45,11 +45,11 @@ class GroupController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function updateGroup(int $id, UpdateGroupRequest $request): JsonResponse
+    public function updateGroup(int $groupId, UpdateGroupRequest $request): JsonResponse
     {
         $this->authorize('isAdmin', User::class);
 
-        $group = $this->groupService->updateGroup($id, $request->all());
+        $group = $this->groupService->updateGroup($groupId, $request->all());
 
         return response()->json(['data' => $group]);
     }
@@ -57,11 +57,11 @@ class GroupController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function deleteGroup(int $id): JsonResponse
+    public function deleteGroup(int $groupId): JsonResponse
     {
         $this->authorize('isAdmin', User::class);
 
-        $status = $this->groupService->deleteGroup($id);
+        $status = $this->groupService->deleteGroup($groupId);
 
         return response()->json(['status' => $status]);
     }
@@ -97,12 +97,26 @@ class GroupController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function getGroup(int $id): JsonResponse
+    public function getGroup(int $groupId): JsonResponse
     {
-        $group = $this->groupService->getGroup($id);
+        $group = $this->groupService->getGroup($groupId);
 
         $this->authorize('show', [Group::class, $group]);
 
         return response()->json(['data' => $group]);
+    }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function getUsersAssignedToGroupByUser(int $userId, Request $request): JsonResponse
+    {
+        $user = $this->userService->getUser($userId);
+
+        $this->authorize('show', [User::class, $user]);
+
+        $data = $this->groupService->getUsersAssignedToGroupByUser($user, $request->all());
+
+        return response()->json($data);
     }
 }

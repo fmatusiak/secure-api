@@ -66,16 +66,17 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('{id}/routes', [RouteUserController::class, 'getUserRoutes']);
         Route::get('{id}/groups', [GroupController::class, 'getUserGroups']);
+        Route::get('{userId}/assigned-users', [GroupController::class, 'getUsersAssignedToGroupByUser']);
     });
 
     Route::prefix('user-groups')->group(function () {
         Route::get('/',[GroupController::class,'paginate']);
-        Route::get('{id}',[GroupController::class,'getGroup']);
+        Route::get('{groupId}',[GroupController::class,'getGroup']);
         Route::post('/',[GroupController::class,'createGroup']);
-        Route::put('/',[GroupController::class,'updateGroup']);
-        Route::delete('{id}',[GroupController::class,'deleteGroup']);
+        Route::put('{groupId}',[GroupController::class,'updateGroup']);
+        Route::delete('{groupId}',[GroupController::class,'deleteGroup']);
 
-        Route::get('{id}/users',[GroupController::class,'getUsersByGroup']);
+        Route::get('{groupId}/users',[GroupController::class,'getUsersByGroup']);
     });
 
     Route::post('/logout', [LogoutController::class, 'logout']);

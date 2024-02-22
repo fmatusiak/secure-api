@@ -3,13 +3,13 @@
 namespace App\Repositories;
 
 use App\Helpers\AuthHelper;
+use App\Helpers\PaginationHelper;
 use App\Interfaces\RouteUserInterface;
 use App\Models\Route;
 use App\Models\RouteUser;
 use App\Models\User;
 use App\Services\QueryFilteringService;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Arr;
 
 class RouteUserRepository extends CrudRepository implements RouteUserInterface
 {
@@ -23,8 +23,8 @@ class RouteUserRepository extends CrudRepository implements RouteUserInterface
 
     public function getUserRoutes(User $user, array $input): LengthAwarePaginator
     {
-        $perPage = Arr::get($input, 'per_page', 10);
-        $columns = Arr::get($input, 'columns', ['*']);
+        $perPage = PaginationHelper::getPerPage($input);
+        $columns = PaginationHelper::getColumns($input);
 
         $query = $user->routes()->with(['routePoints', 'users']);
 
@@ -39,8 +39,8 @@ class RouteUserRepository extends CrudRepository implements RouteUserInterface
 
     public function paginate(array $input): LengthAwarePaginator
     {
-        $perPage = Arr::get($input, 'per_page', 10);
-        $columns = Arr::get($input, 'columns', ['*']);
+        $perPage = PaginationHelper::getPerPage($input);
+        $columns = PaginationHelper::getColumns($input);
 
         $query = $this->model::query();
 
@@ -57,8 +57,8 @@ class RouteUserRepository extends CrudRepository implements RouteUserInterface
 
     public function getRouteUsers(Route $route, array $input): LengthAwarePaginator
     {
-        $perPage = Arr::get($input, 'per_page', 10);
-        $columns = Arr::get($input, 'columns', ['*']);
+        $perPage = PaginationHelper::getPerPage($input);
+        $columns = PaginationHelper::getColumns($input);
 
         $authUser = AuthHelper::getCurrentUser();
 
